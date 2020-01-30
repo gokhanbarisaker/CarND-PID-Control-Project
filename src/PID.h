@@ -1,8 +1,11 @@
 #ifndef PID_H
 #define PID_H
 
-class PID {
- public:
+#include <chrono>
+
+class PID
+{
+public:
   /**
    * Constructor
    */
@@ -31,7 +34,7 @@ class PID {
    */
   double TotalError();
 
- private:
+private:
   /**
    * PID Errors
    */
@@ -41,10 +44,20 @@ class PID {
 
   /**
    * PID Coefficients
-   */ 
+   */
   double Kp;
   double Ki;
   double Kd;
+
+  /**
+   * 
+   */
+  std::chrono::system_clock::time_point update_time_point;
+
+  int calibration_counter;
+
+  void Twiddle(double tolerance);
+  void adjust(double &K, double &pd, double &error_best);
 };
 
-#endif  // PID_H
+#endif // PID_H
